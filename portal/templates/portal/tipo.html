@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class = "card">
+<div class="card-body">
+ <h4> Tipos de Imóveis </h4>
+ <hr>
+<a class="btn btn-success" href="{% url 'tipo_add' %}"> Inserir </a>
+  <table class = "table table-striped">
+      <thead>
+        <tr>
+            <th>Codigo</th>
+            <th>Nome</th>
+            <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+         {% csrf_token %}{%  for tipo in tipos %}
+         <tr>
+             <td>{{ tipo.id  }} </td>
+             <td>{{ tipo.nome }}</td>
+
+             <td><button class='btn btn-warning'>Editar</button>
+                 <button class='btn btn-danger'>Excluir</button>
+             </td>
+         </tr>
+         {% endfor %}
+      </tbody>
+  </table>
+
+</div>
+</div>
+{% endblock %}

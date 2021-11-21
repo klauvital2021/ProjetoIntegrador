@@ -1,0 +1,22 @@
+git init
+git start
+git add .
+<<<<<<< HEAD
+git commit -m "Incluindo arquivo requiremensts"
+git remote add origin https://github.com/klauvital2021/ProjetoIntegrador.git
+git branch -M main
+git push -u origin main
+
+git push origin HEAD:main
+=======
+git commit -m "Todo o projeto"
+git remote add origin https://github.com/klauvital2021/avaliacao.git
+git branch -M main
+git push -u origin main
+
+
+>>>>>>> 06d83ea7f7b357a5a271c2e358e9c5d232f3913c
+
+Git git remote -v    # mostra o nome do repositório remoto e a URL
+git remote show origin    # para ver muito mais informações apenas sobre esse controle remoto.
+

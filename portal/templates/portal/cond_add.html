@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load bootstrap %}
+
+{% block content %}
+ <div class="card">
+    <div class="card-body">
+        <h4>Inserir Condominio</h4>
+        <hr>
+        <div class="container">
+            <form action="{% url 'cond_add' %}" method="post">
+            {% csrf_token %}
+            {{  form|bootstrap }}
+            <button class ="btn btn-success" type="submit">Salvar</button>
+            <button class ="btn btn-warning" onclick="window.location.href='{% url 'condominio' %}'">Cancelar</button>
+        </form>
+        </div>
+
+    </div>
+
+ </div>
+{% endblock %}

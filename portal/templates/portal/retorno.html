@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load bootstrap %}
+
+{% block content %}
+    <div class="card" xmlns="http://www.w3.org/1999/html">
+      <div class="card-body">
+         <h4>Editar Condomínio</h4>
+         <hr>
+            {{ mensagem }}
+            <form action="{% url 'retorno' %}" method="post">
+                {% csrf_token %}
+                  <label for="condominio">Condomínio:</label>
+                  <br />
+                  <input type="text" name="condominio" id= "condominio" size="30" />
+                  <br />
+                  {{ erros.condominio }}
+                  <br />
+                  <label for="bairro">Bairro:</label>
+                  <br />
+                  <input type="text" name="bairro"  id="bairro"  size="10" />
+                  <br />
+                  {{ erros.condominio }}
+                  <br />
+                  <input type="submit" value="Avaliar" />
+
+            </form>
+      </div>
+
+    </div>
+{% endblock %}
