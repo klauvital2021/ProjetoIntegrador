@@ -44,41 +44,40 @@ def filtraCondominio(request):
 
 
 def referenciais(request):
-   media_m2 = ''
-   valorAvaliacao = ''
-   metro_quadr = 0
-   cont = 0
-   vidautil = 0
-   linha = 0
-   coluna = ''
-   if request.method == "POST":
+    if request.method == "POST":
+        uso = request.POST.get('uso')
+        tipo = request.POST.get('tipo')
+        conservacao = request.POST.get('estadoConserv')
+        padrao = request.POST.get('padrao')
+        idade = int(request.POST.get('idade'))
+        aT = request.POST.get('atotal')
+        aC = int(request.POST.get('aconstruida'))
+        condominio = request.POST.get('condominio')
+        bairro = request.POST.get('bairro')
+        cidade = request.POST.get('cidade')
+        estado = request.POST.get('estado')
 
-       uso = request.POST.get('uso')
-       tipo = request.POST.get('tipo')
-       conservacao= request.POST.get('estadoConserv')
-       padrao = request.POST.get('padrao')
-       idade = int(request.POST.get('idade'))
-       aT = request.POST.get('atotal')
-       aC = int(request.POST.get('aconstruida'))
-       condominio = request.POST.get('condominio')
-       bairro = request.POST.get('bairro')
-       cidade = request.POST.get('cidade')
-       estado = request.POST.get('estado')
+        busca = Q(
+            Q(
+                Q(nomecondominio__nome=condominio) | Q(bairro=bairro)
+            )
+            & Q(padrao__nome=padrao)
+            & Q(tipo__nome=tipo)
+        )
+        dados = (uso, tipo, conservacao, padrao, idade, aT, aC,
+                 condominio, bairro, cidade, estado)
 
-       busca = Q(
-           Q(
-               Q(nomecondominio__nome=condominio) | Q(bairro=bairro)
-           )
-           & Q(padrao__nome=padrao)
-           & Q(tipo__nome=tipo)
-          )
-       dados = (uso, tipo, conservacao, padrao, idade, aT, aC,
-                condominio, bairro, cidade, estado)
+        Listimovel = Imovel.objects.filter(busca)
 
-       Listimovel = Imovel.objects.filter(busca)
+        metro_quadr = 0
+        cont = 0
+        media_m2 = ''
+        valorAvaliacao = ''
+        vidautil = 0
+        linha = 0
+        coluna = ''
 
-
-       for i in Listimovel:
+        for i in Listimovel:
            if idade == i.idade:
                metro_quadr += (i.metroquadrado())
                cont += 1
@@ -94,10 +93,8 @@ def referenciais(request):
                    # retorna a coluna de acordo com o indice
                    coluna = lst.pop(indice_coluna)
                    # retorna o id da tabelarossheideck de acordo com a vida util
-                   linha = Tabelarossheideck(idade_em_vida=vidautil)
-                   linha.save()
-                   linha.id
-                   print(linha.id)
+                   linha = Tabelarossheideck.objects.get(idade_em_vida=vidautil).id
+
 
                    # tem que retornar o valor da tabela de acordo com id e a coluna
                    ### :( não sei fazer o filtro
@@ -105,23 +102,23 @@ def referenciais(request):
                    metro_quadr += (i.metroquadrado() - ((i.metroquadrado() * indice_trh) / 100))
                    cont += 1
 
-           media_m2 = round(metro_quadr / cont, 2)
-           locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
-           valorAvaliacao = (media_m2 * aC)
-      #     media_m2 = locale.currency(media_m2)
-      #     valorAvaliacao = locale.currency(valorAvaliacao)
+        media_m2 = round(metro_quadr / cont, 2)
+        #    locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
+        valorAvaliacao = (media_m2 * aC)
+        #     media_m2 = locale.currency(media_m2)
+        #      valorAvaliacao = locale.currency(valorAvaliacao)
 
-           media_m2 = "R$ {:,.2f}".format(media_m2).replace(",", "X").replace(".", ",").replace("X", ".")
-           valorAvaliacao = "R$ {:,.2f}".format(valorAvaliacao).replace(",", "X").replace(".", ",").replace("X", ".")
+        media_m2 = "R$ {:,.2f}".format(media_m2).replace(",", "X").replace(".", ",").replace("X", ".")
+        valorAvaliacao = "R$ {:,.2f}".format(valorAvaliacao).replace(",", "X").replace(".", ",").replace("X", ".")
 
-       context = {
+        context = {
            'filtroCond': Listimovel,
            'dados': dados,
            'valor': valorAvaliacao,
            'media_metro2':media_m2,
            'area_construida': aC,
-       }
-       return render(request, 'portal/referenciais.html', context=context)
+        }
+        return render(request, 'portal/referenciais.html', context=context)
 
 
 def calcula(request):

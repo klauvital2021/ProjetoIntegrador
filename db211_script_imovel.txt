@@ -1,0 +1,11 @@
+INSERT INTO "portal_imovel" ("id","idade","bairro","cidade","aconstruida","atotal","dtaCadastro","status","corretor_id","estadoconser_id","nomecondominio_id","padrao_id","tipo_id","vidautil_id","valorDeVenda") VALUES 
+ (1,1,'San Marco','Bonfim Paulista',145,250,'2021-08-15','1',1,1,1,2,2,4,990000),
+ (2,1,'San Marco','Bonfim',140,250,'2021-08-30','1',1,1,3,2,2,4,850000),
+ (3,1,'Valência','Bonfim Paulista',170,320,'2021-09-10','1',1,1,2,2,2,4,1200000),
+ (4,1,'Agra Ribeirão','Ribeirão Preto',169,253,'2021-10-02','1',1,1,7,2,2,4,980000),
+ (5,15,'Higienópolis','Ribeirão Preto',149,160,'2021-05-10','1',1,2,6,3,1,5,495000),
+ (6,1,'Terras de Florença','Ribeirão Preto',170,335,'2021-09-10','1',1,1,8,2,2,4,1150000),
+ (7,1,'San Marco','Ribeirão Preto',152,304,'2021-08-10','1',1,1,14,2,2,4,900000),
+ (8,18,'Jardim Macedo','Ribeirão Preto',93,104,'2021-10-07','1',1,3,12,4,1,5,350000),
+ (9,1,'Santa Cruz José Jacques','Ribeirão Preto',110,130,'2021-08-08','1',1,2,15,3,1,5,475000),
+ (10,18,'Higienópolis','Ribeirão Preto',201,210,'2021-11-14','1',1,2,16,3,1,5,550000);

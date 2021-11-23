@@ -96,9 +96,6 @@ class Imovel(models.Model):
     corretor = models.ForeignKey(Corretor, on_delete=models.CASCADE, blank=True)
     vidautil = models.ForeignKey(Vidautil, on_delete=models.CASCADE, blank=True,  verbose_name='Vida Útil')  # Field name made lowercase.
 
-    class Meta:
-        unique_together = ['padrao', 'tipo', 'nomecondominio', 'estadoconser', 'corretor', 'vidautil']
-
     def __str__(self):
         return "{} - {} - {} - {} - {} - {} ".format(self.padrao.nome, self.tipo.nome, self.nomecondominio.nome, self.estadoconser.nome, self.corretor.nome, self.vidautil.nome)
 
@@ -106,8 +103,11 @@ class Imovel(models.Model):
         return "{} - {} - {}".format(self.valordevenda, self.aconstruida, self.atotal)
 
     def metroquadrado(self):
-        metro_quadrado=((self.valordevenda)/(self.aconstruida))
-        return metro_quadrado
+        if self.aconstruida == 0:
+            return self.valordevenda, self.aconstruida
+        else:
+            metro_quadrado = ((self.valordevenda) / (self.aconstruida))
+            return metro_quadrado
 
     def get_absolute_url(self):
         return reverse("editar", kwargs={"imovel_pk": self.id})
