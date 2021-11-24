@@ -15,6 +15,9 @@ class ImovelForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['dtacadastro'].widget.attrs.update({'class': 'mask-date'})
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
+
 
 class ImovelFormFilter(forms.ModelForm):
     class Meta:

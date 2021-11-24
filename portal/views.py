@@ -1,14 +1,16 @@
+import decimal
 import math
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
-import django_filters
-import locale
+
 
 from portal.forms import ImovelForm, PadraoForm, NomecondominioForm, EstadoconserForm, TipoForm, ImovelFormFilter
 from portal.models import Imovel, Padrao, Nomecondominio, Estadoconser, Tipo, Tabelarossheideck
 
 
 def home(request):
+    #imovel_form = ImovelForm(request.POST or None)
+    #context = {'imovel_form': imovel_form}
     return render(request, 'portal/home.html')
 
 def TesteRetorno(request):
@@ -56,6 +58,8 @@ def referenciais(request):
         bairro = request.POST.get('bairro')
         cidade = request.POST.get('cidade')
         estado = request.POST.get('estado')
+        # Quando precisar dos valores de Estadoconser
+
 
         busca = Q(
             Q(
@@ -71,76 +75,75 @@ def referenciais(request):
 
         metro_quadr = 0
         cont = 0
-        media_m2 = ''
+        media_m2 = 0
+        gordura = 0
         valorAvaliacao = ''
         vidautil = 0
         linha = 0
         coluna = ''
 
         for i in Listimovel:
-           if idade == i.idade:
-               metro_quadr += (i.metroquadrado())
-               cont += 1
-               print(metro_quadr, cont)
-           else:
-               ec = i.estadoconser.codigo
-               vidautil = math.ceil(((idade - i.idade) * 100) / i.vidautil.idadevidautil)
-               lst = [field.name for field in Tabelarossheideck._meta.get_fields()]
-               print(lst)
-               if ec in lst:
-                   # retorna o indice que esta a coluna
-                   indice_coluna = lst.index(ec)
-                   # retorna a coluna de acordo com o indice
-                   coluna = lst.pop(indice_coluna)
-                   # retorna o id da tabelarossheideck de acordo com a vida util
-                   linha = Tabelarossheideck.objects.get(idade_em_vida=vidautil).id
+            metro_quadr = 0
+            metro_quadr = i.metroquadrado()
+            if i.status == '1':
+                gordura = (metro_quadr * 0.05)
+                metro_quadr = metro_quadr - gordura
 
+            if idade == i.idade:
+                cont += 1
+                media_m2 += metro_quadr / cont
+            else:
+                ec = i.estadoconser.codigo
+                vidautil = math.ceil(((idade - i.idade) * 100) / i.vidautil.idadevidautil)
+                if vidautil % 2 !=0:
+                    vidautil=vidautil+1
+                lst = [field.name for field in Tabelarossheideck._meta.get_fields()]
+                print(lst)
 
-                   # tem que retornar o valor da tabela de acordo com id e a coluna
-                   ### :( não sei fazer o filtro
-                   indice_trh = Tabelarossheideck.objects.filter(id=linha, ec=coluna)
-                   metro_quadr += (i.metroquadrado() - ((i.metroquadrado() * indice_trh) / 100))
-                   cont += 1
+                # ec vem da lista de colunas da Tabelarossheideck
 
-        media_m2 = round(metro_quadr / cont, 2)
-        #    locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
-        valorAvaliacao = (media_m2 * aC)
-        #     media_m2 = locale.currency(media_m2)
-        #      valorAvaliacao = locale.currency(valorAvaliacao)
+                # Dicionário vazio
+                lorem = {}
 
+                # Transforma o objeto Tabelarossheideck numa lista de dicionários.
+                objeto_rossheideck = Tabelarossheideck.objects.filter(idade_em_vida=vidautil).values()
+                primeiro_registro = objeto_rossheideck[0]
+                '''
+                try:
+                    # Pega o primeiro item da lista.
+                    primeiro_registro = objeto_rossheideck[0]
+                except IndexError:
+                    # Resolve o cálculo da vidautil quando não encontrar a idade_em_vida na Tabelarossheideck.
+                    # RTA
+                    objeto_rossheideck = Tabelarossheideck.objects.all().values()
+                    primeiro_registro = objeto_rossheideck[0]
+                '''
+                # valor da coluna correspondente
+                # primeiro_registro[ec] é como se fosse um dicionário
+                # com chave e valor, mas no lugar da chave
+                # usamos uma variável, porque a letra vem de ec.
+                valor_da_coluna = primeiro_registro[ec]
+                metro_quadr = (metro_quadr - (metro_quadr * float(valor_da_coluna)/100))
+                #metro_quadr += (i.metroquadrado() - ((i.metroquadrado() * valor_da_coluna) / 100))
+                cont += 1
+                media_m2+=  metro_quadr
+
+        media_m2 = media_m2 / cont
+        valorAvaliacao = media_m2 * aC
         media_m2 = "R$ {:,.2f}".format(media_m2).replace(",", "X").replace(".", ",").replace("X", ".")
         valorAvaliacao = "R$ {:,.2f}".format(valorAvaliacao).replace(",", "X").replace(".", ",").replace("X", ".")
 
         context = {
+           'vidautil' : vidautil,
+           'valor_da_coluna':valor_da_coluna,
            'filtroCond': Listimovel,
            'dados': dados,
            'valor': valorAvaliacao,
-           'media_metro2':media_m2,
+           'media_metro2': media_m2,
            'area_construida': aC,
         }
         return render(request, 'portal/referenciais.html', context=context)
 
-
-def calcula(request):
-    ac = request.POST.get('dados.6')
-    imoveis = request.POST.get('filtroCond')
-    ok = request.POST.get('ok')
-
-    for Imovel in imoveis:
-        metro2 = (metro2+ (Imovel.valordevenda/Imovel.aconstruida))
-        cont = cont + 1
-        media = (metro2/ cont)
-        print(metro2, cont, media)
-
-    valorAvaliacao= (metro2 * ac)
-
-    context = {
-        'metro2': metro2,
-        'contador':cont,
-        'media' : media,
-        'Precificação': valorAvaliacao,
-    }
-    return render(request, 'portal/calculos.html', context=context)
 
 def imovel_edit(request, imovel_pk):
     imovel = get_object_or_404(Imovel, pk=imovel_pk)

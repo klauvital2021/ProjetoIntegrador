@@ -28,7 +28,7 @@
                 <th>Cidade</th>
                 <th>AC</th>
                 <th>AT</th>
-
+                <th>Estatus</th>
                 <th>Padrão</th>
                 <th>EC</th>
                 <th>Idade</th>
@@ -47,7 +47,7 @@
                  <td>{{ imovel.cidade }} </td>
                  <td>{{ imovel.aconstruida }} </td>
                  <td>{{ imovel.atotal }} </td>
-
+                 <td>{{ imovel.status }} </td>
                  <td>{{ imovel.padrao.nome }} </td>
                  <td>{{ imovel.estadoconser.nome }} </td>
                  <td>{{ imovel.idade }} </td>
@@ -60,7 +60,8 @@
           </tbody>
         </table>
 
-        <div><h4><b>Média m² = </b> {{ media_metro2 }} <b> x  Área Construída = </b>{{ area_construida  }} =>
+    <div><h4><b>VidaUtil em % = </b>{{ vidautil }},<b> Percentual de Homogeinização = </b> {{ valor_da_coluna }}%</b></h4></div>
+    <div><h4><b>Média m² = </b> {{ media_metro2 }} <b> x  Área Construída = </b>{{ area_construida  }} =>
         <b>Valor Avaliado = </b> {{ valor }} </h4></div>
 </div>
 </div>

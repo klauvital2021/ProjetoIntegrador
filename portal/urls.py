@@ -7,7 +7,6 @@ urlpatterns = [
     path('retorno/', views.TesteRetorno, name='retorno'),
     path('avaliacao', views.filtraCondominio, name='avaliacao'),
     path('referenciais/', views.referenciais, name='referenciais'),
-    path('calculos/', views.calcula, name='calcular'),
     path('imoveis/', views.imovel, name='imoveis'),
     path('imovel/add/', views.imovel_add, name='imovel_add'),
     path('imovel/edit/<int:imovel_pk>/', views.imovel_edit, name='editar'),
