@@ -2,6 +2,7 @@
 
 
 
+
 {% block content %}
 <div class = "card">
 <div class="card-body">
@@ -22,7 +23,6 @@
           <thead>
             <tr>
                 <th>ID</th>
-
                 <th>Tipo</th>
                 <th>Condomínio</th>
                 <th>Bairro</th>
@@ -33,8 +33,8 @@
                 <th>EC</th>
                 <th>Idade</th>
                 <th>Valor</th>
-                <th>M²</th>
-                <th>Considerado</th>
+                <th>M² Inicial</th>
+                <th>M² Final</th>
             </tr>
           </thead>
           <tbody>
@@ -42,7 +42,6 @@
 
              <tr>
                  <td>{{ imovel.id  }} </td>
-
                  <td>{{ imovel.tipo.nome }}</td>
                  <td>{{ imovel.nomecondominio.nome }} </td>
                  <td>{{ imovel.bairro }}</td>

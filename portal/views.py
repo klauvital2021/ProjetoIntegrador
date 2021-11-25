@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
 
 
+
 from portal.forms import ImovelForm, PadraoForm, NomecondominioForm, EstadoconserForm, TipoForm, ImovelFormFilter
 from portal.models import Imovel, Padrao, Nomecondominio, Estadoconser, Tipo, Tabelarossheideck
 
@@ -129,12 +130,13 @@ def referenciais(request):
                 cont += 1
                 media_m2 += metro_quadr
                 metro_quadrado_inicial = i.metroquadrado()
-                metro_quadrado_inicial = i.vl_considerado(metro_quadrado_inicial, desconto_oferta, valor_tabela)
+                metro_quadrado_final = i.vl_considerado(metro_quadrado_inicial, desconto_oferta, valor_tabela)
 
         media_m2 = media_m2 / cont
         valorAvaliacao = media_m2 * aC
         media_m2 = "R$ {:,.2f}".format(media_m2).replace(",", "X").replace(".", ",").replace("X", ".")
         valorAvaliacao = "R$ {:,.2f}".format(valorAvaliacao).replace(",", "X").replace(".", ",").replace("X", ".")
+
 
         context = {
            'vidautil' : vidautil,
@@ -144,7 +146,6 @@ def referenciais(request):
            'valor': valorAvaliacao,
            'media_metro2': media_m2,
            'area_construida': aC,
-           'metro_quadrado_final': i.vl_considerado,
 
         }
         return render(request, 'portal/referenciais.html', context=context)

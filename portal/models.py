@@ -110,8 +110,8 @@ class Imovel(models.Model):
             return round(float(metro_quadrado),2)
 
     def vl_considerado(self, metro, gordura, taxa):
-        considerado = (metro - gordura - taxa)
-        return round(float(considerado),2)
+        considerado = metro - gordura - taxa
+        return considerado
 
     def get_absolute_url(self):
         return reverse("editar", kwargs={"imovel_pk": self.id})
