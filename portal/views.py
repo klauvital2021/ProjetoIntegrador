@@ -60,7 +60,6 @@ def referenciais(request):
         estado = request.POST.get('estado')
         # Quando precisar dos valores de Estadoconser
 
-
         busca = Q(
             Q(
                 Q(nomecondominio__nome=condominio) | Q(bairro=bairro)
@@ -79,15 +78,17 @@ def referenciais(request):
         gordura = 0
         valorAvaliacao = ''
         vidautil = 0
-        linha = 0
-        coluna = ''
+        valor_tabela = 0
+        desconto_oferta = 0
+        metro_quadrado_inicial = 0
+        metro_quadr_final = 0
 
         for i in Listimovel:
             metro_quadr = 0
             metro_quadr = i.metroquadrado()
             if i.status == '1':
-                gordura = (metro_quadr * 0.05)
-                metro_quadr = metro_quadr - gordura
+                desconto_oferta = (metro_quadr * 0.05)
+                metro_quadr = metro_quadr - desconto_oferta
 
             if idade == i.idade:
                 cont += 1
@@ -98,7 +99,6 @@ def referenciais(request):
                 if vidautil % 2 !=0:
                     vidautil=vidautil+1
                 lst = [field.name for field in Tabelarossheideck._meta.get_fields()]
-                print(lst)
 
                 # ec vem da lista de colunas da Tabelarossheideck
 
@@ -123,10 +123,13 @@ def referenciais(request):
                 # com chave e valor, mas no lugar da chave
                 # usamos uma variável, porque a letra vem de ec.
                 valor_da_coluna = primeiro_registro[ec]
-                metro_quadr = (metro_quadr - (metro_quadr * float(valor_da_coluna)/100))
+                valor_tabela = metro_quadr * float(valor_da_coluna)/100
+                metro_quadr = metro_quadr - valor_tabela
                 #metro_quadr += (i.metroquadrado() - ((i.metroquadrado() * valor_da_coluna) / 100))
                 cont += 1
-                media_m2+=  metro_quadr
+                media_m2 += metro_quadr
+                metro_quadrado_inicial = i.metroquadrado()
+                metro_quadrado_inicial = i.vl_considerado(metro_quadrado_inicial, desconto_oferta, valor_tabela)
 
         media_m2 = media_m2 / cont
         valorAvaliacao = media_m2 * aC
@@ -141,9 +144,10 @@ def referenciais(request):
            'valor': valorAvaliacao,
            'media_metro2': media_m2,
            'area_construida': aC,
+           'metro_quadrado_final': i.vl_considerado,
+
         }
         return render(request, 'portal/referenciais.html', context=context)
-
 
 def imovel_edit(request, imovel_pk):
     imovel = get_object_or_404(Imovel, pk=imovel_pk)

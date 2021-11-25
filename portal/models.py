@@ -107,7 +107,11 @@ class Imovel(models.Model):
             return self.valordevenda, self.aconstruida
         else:
             metro_quadrado = ((self.valordevenda) / (self.aconstruida))
-            return float(metro_quadrado)
+            return round(float(metro_quadrado),2)
+
+    def vl_considerado(self, metro, gordura, taxa):
+        considerado = (metro - gordura - taxa)
+        return round(float(considerado),2)
 
     def get_absolute_url(self):
         return reverse("editar", kwargs={"imovel_pk": self.id})
