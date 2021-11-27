@@ -62,9 +62,8 @@ def referenciais(request):
         # Quando precisar dos valores de Estadoconser
 
         busca = Q(
-            Q(
-                Q(nomecondominio__nome=condominio) | Q(bairro=bairro)
-            )
+            Q(nomecondominio__nome=condominio)
+            | Q(bairro=bairro)
             & Q(padrao__nome=padrao)
             & Q(tipo__nome=tipo)
         )
@@ -93,6 +92,7 @@ def referenciais(request):
                 dicionario = {}
                 metro_quadr = 0
                 metro_quadr = i.metroquadrado()
+                metro_quadrado_final = 0
                 if i.status == '1':
                     desconto_oferta = round((metro_quadr * 0.05),2)
                     metro_quadr = metro_quadr - desconto_oferta
@@ -102,13 +102,17 @@ def referenciais(request):
                     media_m2 += metro_quadr / cont
                 else:
                     ec = i.estadoconser.codigo
-                    vidautil = math.ceil(((idade - i.idade) * 100) / i.vidautil.idadevidautil)
+                    vidautil = (idade - i.idade)
+                    vidautil = round(vidautil * 100 / i.vidautil.idadevidautil)
                     idade_em_perc = vidautil
+
                     if vidautil < 0:
-                       vidautil=vidautil-vidautil
+                       vidautil= vidautil * -1
                        inversao = True
+
                     if vidautil == 0:
                        vidautil= vidautil+2
+
                     if vidautil % 2 !=0:
                        vidautil=vidautil+1
 
@@ -129,7 +133,7 @@ def referenciais(request):
                     # usamos uma variável, porque a letra vem de ec.
                     valor_da_coluna = primeiro_registro[ec]
                     valor_tabela = round(metro_quadr * float(valor_da_coluna)/100,2)
-                    media_m2 += metro_quadr
+
                     metro_quadrado_inicial = i.metroquadrado()
 
                     if inversao == True:
@@ -139,7 +143,7 @@ def referenciais(request):
                         metro_quadrado_final = metro_quadrado_inicial - valor_tabela - desconto_oferta
 
                     cont += 1
-
+                    media_m2 += metro_quadrado_final
                     dicionario['id'] = i.id
                     dicionario['tipo'] = i.tipo.nome
                     dicionario['padrao'] = i.padrao.nome
