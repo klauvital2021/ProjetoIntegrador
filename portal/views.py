@@ -97,6 +97,7 @@ def referenciais(request):
             else:
                 ec = i.estadoconser.codigo
                 vidautil = math.ceil(((idade - i.idade) * 100) / i.vidautil.idadevidautil)
+
                 if vidautil % 2 !=0:
                     vidautil=vidautil+1
                 lst = [field.name for field in Tabelarossheideck._meta.get_fields()]
