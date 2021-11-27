@@ -1,8 +1,6 @@
 {% extends 'base.html' %}
 
 
-
-
 {% block content %}
 <div class = "card">
 <div class="card-body">
@@ -15,6 +13,7 @@
        <b>Bairro:</b> {{ dados.8 }},<b> Cidade:</b> {{ dados.9 }},<b> Estado: </b>{{ dados.10 }}.
 
    </div>
+   <div><h2><b>{{ frase }}</b></h2></div>
  <br/>
    <div>
        Lista dos imóveis selecionados de mesmo Padrão, Tipo e Bairro: </div>
@@ -24,44 +23,49 @@
             <tr>
                 <th>ID</th>
                 <th>Tipo</th>
+                <th>Padrâo</th>
                 <th>Condomínio</th>
                 <th>Bairro</th>
-                <th>Cidade</th>
                 <th>AC</th>
-                <th>Estatus</th>
-                <th>Padrão</th>
+                <th>Status</th>
                 <th>EC</th>
                 <th>Idade</th>
+                <th>Dif. Idade em % vida</th>
                 <th>Valor</th>
                 <th>M² Inicial</th>
+                <th> - 5% Oferta</th>
+                <th>% Tabela</th>
+                <th>Calculado</th>
                 <th>M² Final</th>
+
             </tr>
+
           </thead>
           <tbody>
-             {%  for imovel in filtroCond %}
-
+             {% for imovel in lista %}
              <tr>
-                 <td>{{ imovel.id  }} </td>
-                 <td>{{ imovel.tipo.nome }}</td>
-                 <td>{{ imovel.nomecondominio.nome }} </td>
+                 <td>{{ imovel.id }} </td>
+                 <td>{{ imovel.tipo }}</td>
+                 <td>{{ imovel.padrao }} </td>
+                 <td>{{ imovel.condominio }} </td>
                  <td>{{ imovel.bairro }}</td>
-                 <td>{{ imovel.cidade }} </td>
-                 <td>{{ imovel.aconstruida }} </td>
-                 <td>{{ imovel.status }} </td>
-                 <td>{{ imovel.padrao.nome }} </td>
-                 <td>{{ imovel.estadoconser.nome }} </td>
+                 <td>{{ imovel.ac }} </td>
+                 <td>{{ imovel.estatus }} </td>
+                 <td>{{ imovel.ec }} </td>
                  <td>{{ imovel.idade }} </td>
-                 <td>{{ imovel.valordevenda }} </td>
-                 <td>{{ imovel.metroquadrado }} </td>
-                 <td>{{ imovel.vl_considerado }} </td>
-             </tr>
-
-             {% endfor %}
+                 <td>{{ imovel.idade_em_perc }}</td>
+                 <td>{{ imovel.valor }} </td>
+                 <td>{{ imovel.metro_quadrado }} </td>
+                 <td>{{ imovel.desconto_oferta }}</td>
+                 <td>{{ imovel.valor_da_coluna  }}</td>
+                 <td>{{ imovel.valor_tabela }}</td>
+                 <td>{{ imovel.metro_quadrado_final }}</td>
+          </tr>
+            {% endfor %}
 
           </tbody>
         </table>
 
-    <div><h4><b>VidaUtil em % = </b>{{ vidautil }},<b> Percentual de Homogeinização = </b> {{ valor_da_coluna }}% </h4></div>
     <div><h4><b>Média m² = </b> {{ media_metro2 }} <b> x  Área Construída = </b>{{ area_construida  }} =>
         <b>Valor Avaliado = </b> {{ valor }} </h4></div>
 </div>

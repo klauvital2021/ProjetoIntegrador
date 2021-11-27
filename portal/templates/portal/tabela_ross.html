@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class = "card">
+<div class="card-body">
+ <h4> Tabela de Ross Heideck</h4>
+ <hr>
+  <table class = "table table-striped">
+      <thead>
+         <tr>
+            <th>ID</th>
+            <th>Idade em % vida</th>
+            <th>A</th>
+            <th>B</th>
+            <th>C</th>
+            <th>D</th>
+            <th>E</th>
+            <th>F</th>
+            <th>G</th>
+            <th>H</th>
+         </tr>
+      </thead>
+      <tbody>
+         {%  for tabela in ross %}
+         <tr>
+            <td>{{ tabela.id }} </td>
+            <td>{{ tabela.idade_em_vida }}</td>
+            <td>{{ tabela.a }}</td>
+            <td>{{ tabela.b }}</td>
+            <td>{{ tabela.c }}</td>
+            <td>{{ tabela.d }}</td>
+            <td>{{ tabela.e }}</td>
+            <td>{{ tabela.f }}</td>
+            <td>{{ tabela.g }}</td>
+            <td>{{ tabela.h }}</td>
+         </tr>
+         {% endfor %}
+      </tbody>
+  </table>
+</div>
+</div>
+{% endblock %}

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'bootstrapform',
     'django_filters',
     'portal.apps.PortalConfig',
+
 ]
 
 MIDDLEWARE = [
@@ -67,6 +68,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                #'portal.templatestags.tags_referenciais.vl_considerado',
             ],
         },
     },

@@ -55,6 +55,9 @@ class Tabelarossheideck(models.Model):
     g = models.DecimalField(max_digits=10, decimal_places=2,blank=True, null=True)  # Field name made lowercase.
     h = models.DecimalField(max_digits=10, decimal_places=2,blank=True, null=True)  # Field name made lowercase.
 
+    def __str__(self):
+        return self.idade_em_vida
+
     def __int__(self):
         return (self.id)
 
@@ -70,6 +73,9 @@ class Tipo(models.Model):
 class Vidautil(models.Model):
     nome = models.CharField(max_length=100, blank=True, null=True)
     idadevidautil = models.IntegerField(db_column='idadeVidaUtil', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+       ordering = ['nome']
 
     def __str__(self):
         return self.nome
@@ -109,9 +115,6 @@ class Imovel(models.Model):
             metro_quadrado = ((self.valordevenda) / (self.aconstruida))
             return round(float(metro_quadrado),2)
 
-    def vl_considerado(self, metro, gordura, taxa):
-        considerado = metro - gordura - taxa
-        return considerado
 
     def get_absolute_url(self):
         return reverse("editar", kwargs={"imovel_pk": self.id})
